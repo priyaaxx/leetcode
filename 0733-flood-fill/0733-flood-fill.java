@@ -1,20 +1,27 @@
 class Solution {
-    void change(int[][] image, int r, int c, int prevC,int nextC){
-        if(r<0 || c<0 || r>=image.length || c>=image[0].length || image[r][c]==nextC 
-           || image[r][c]!=prevC)
+    public void helper(int[][] image, int sr, int sc, int color, boolean vis[][], int orgCol)
+    {
+        if(sr<0 || sc<0 || sr>=image.length || sc>=image[0].length || vis[sr][sc])
         {
             return;
         }
-        image[r][c]=nextC;
-        change(image, r, c+1, prevC,nextC);
-        change(image, r, c-1, prevC,nextC);
-        change(image, r+1, c, prevC,nextC);
-        change(image, r-1, c, prevC,nextC); 
-        
+        if(image[sr][sc]!=orgCol)
+        {
+            return;
+        }
+        vis[sr][sc] = true;
+        image[sr][sc] = color;
+        helper(image, sr-1, sc , color, vis, orgCol);
+        helper(image, sr+1, sc, color, vis, orgCol);
+        helper(image, sr, sc+1, color, vis, orgCol);
+        helper(image, sr, sc-1, color, vis, orgCol);
     }
-
-    public int[][] floodFill(int[][] image, int row, int column, int color) {
-        change(image, row, column, image[row][column], color);
-        return image;
+    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+    //    if (image[sr][sc] == color) {
+    //   return image;
+    // }
+    boolean vis[][] = new boolean[image.length][image[0].length];
+    helper(image, sr, sc, color, vis, image[sr][sc]);
+    return image;
     }
 }
