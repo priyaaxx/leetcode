@@ -8,10 +8,7 @@ class Solution {
         int cs=0;
         for(int i=0;i<nums.length;i++){
             cs = cs + nums[i];
-            if(cs>ms)
-            {
-                ms = cs;
-            }
+            ms = Math.max(cs, ms);
             if(cs<0)
             {
                 cs = 0;
