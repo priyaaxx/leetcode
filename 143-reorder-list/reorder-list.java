@@ -10,37 +10,37 @@
  */
 class Solution {
     public void reorderList(ListNode head) {
-        ArrayList<Integer> list = new ArrayList<>();
-        ArrayList<Integer> ans = new ArrayList<>();
-        ListNode curr = head;
-        int length = 0;
-        while(curr!=null){
-            length++;
-            list.add(curr.val);
-            curr = curr.next;
-        }
-        curr = head;
-        int i=0;
-        int j=list.size()-1;
-        while(i<j){
-            ans.add(list.get(i));
-            ans.add(list.get(j));
-            i++;
-            j--;
-        }
-        if(length % 2!=0){
-            ans.add(list.get(i));
-        }
-        System.out.println(ans);
-        
-       ListNode dNode = new ListNode(-1);
-       ListNode temp = dNode;
-       i=1;
-       while(i<ans.size()){
-            temp.next = new ListNode(ans.get(i));
-            i++;
-            temp = temp.next;
+       //Find the midpoint
+       ListNode slow = head;
+       ListNode fast = head;
+       while(fast.next!=null && fast.next.next!=null){
+            slow = slow.next;
+            fast = fast.next.next;
        }
-       head.next = dNode.next;
+
+       //Reverse the second half
+       ListNode prev = null;
+       ListNode curr = slow;
+       ListNode next;
+       while(curr!=null){
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+       }
+
+       //Reorder the list
+        ListNode first = head;
+        ListNode second = prev;
+        while(second!=null && first!=null){
+            ListNode t1 = first.next;
+            ListNode t2 = second.next;
+
+            first.next = second;
+            second.next = t1;
+
+            first = t1;
+            second = t2;
+        }
     }
 }
